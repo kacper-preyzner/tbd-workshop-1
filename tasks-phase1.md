@@ -102,7 +102,7 @@ uris = ['gs://tbd-2025z-347430-data/data/*.orc']
 );
 ```
     
-***place the code and output here***
+   ![Couldn't load image](images/big-query.png)
 
 ***why does ORC not require a table schema?***
 
