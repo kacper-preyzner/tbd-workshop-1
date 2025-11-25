@@ -87,15 +87,65 @@ resource_usage:
 
 9. Create a BigQuery dataset and an external table using SQL
 
-    ***place the code and output here***
+ORC file was downloaded from: https://github.com/apache/orc/blob/main/examples/TestOrcFile.test1.orc
 
-    ***why does ORC not require a table schema?***
+```sql
+CREATE SCHEMA IF NOT EXISTS `tbd-2025z-347430.tbd_dataset`
+OPTIONS (
+location = 'europe-west1'
+);
 
-10. Find and correct the error in spark-job.py
+CREATE EXTERNAL TABLE IF NOT EXISTS `tbd-2025z-347430.tbd_dataset.tab-ext`
+OPTIONS (
+format = 'ORC',
+uris = ['gs://tbd-2025z-347430-data/data/*.orc']
+);
+```
+    
+***place the code and output here***
 
-    ***describe the cause and how to find the error***
+***why does ORC not require a table schema?***
 
-11. Add support for preemptible/spot instances in a Dataproc cluster
+ORC (Optimized Row Columnar) files are self-describing, meaning they store metadata such as column names, data types, and structure. This allows systems like BigQuery to automatically interpret the data without requiring a predefined table schema, simplifying data ingestion and processing.
+
+11. Find and correct the error in spark-job.py
+
+    The error is an incorrect/not specified correctly data bucket number. In the original code it's *9901*. When we submit the code to run on cluster, we can see Error "The specified bucket does not exist" in logs:
+    ![Couldn't load image](images/spark-job-error.png)
+
+    After changing the bucket number to ours and submitting it again we get a succesfull run:
+    ![Couldn't load image](images/spark-job-success.png)
+
+    With an output table:
+    ```
+    +----+--------------+
+    |word|sum_word_count|
+    +----+--------------+
+    | the|         25568|
+    |   I|         21028|
+    | and|         19649|
+    |  to|         17361|
+    |  of|         16438|
+    |   a|         13409|
+    | you|         12527|
+    |  my|         11291|
+    |  in|         10589|
+    |  is|          8735|
+    |that|          8561|
+    | not|          8395|
+    |  me|          8030|
+    | And|          7780|
+    |with|          7224|
+    |  it|          7137|
+    | his|          6811|
+    |  be|          6724|
+    |your|          6244|
+    | for|          6154|
+    +----+--------------+
+    only showing top 20 rows
+    ```
+
+12. Add support for preemptible/spot instances in a Dataproc cluster
 
       To the file [modules/dataproc/variables.tf](modules/dataproc/variables.tf) added a variable *preeemptible_worker_count*:
       ```
@@ -183,6 +233,6 @@ jobs:
       run: terraform destroy -no-color -var-file env/project.tfvars -auto-approve
       continue-on-error: false
 ```
-***paste screenshot/log snippet confirming the auto-destroy ran***
+![Couldn't load image](images/auto-destroy-run.png)
 
-Scheduling cleanup helps to insure that we don't burn through all the resources by forgetting to run destroy manually after our work. It was scheduled for 3 a.m. Polish winter time, becuse this is the optimal time between the time we might actively work on the project (which is mostly evening to early night), and time the project was running for too long without work done on it. Adding a destroy on tag in pull-request helps to triger it faster when we now we don't need the system running after, without having to go to actions.
+Scheduling cleanup helps to insure that we don't burn through all the resources by forgetting to run destroy manually after our work. It was scheduled for 3 a.m. Polish winter time, because this is the optimal time between the time we might actively work on the project (which is mostly evening to early night), and time the project was running for too long without work done on it. Adding a destroy on tag in pull-request helps to triger it faster when we don't need the system running after, without having to go to actions.
