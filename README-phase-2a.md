@@ -18,9 +18,8 @@ Worth to read:
 
 2. Authors:
 
-   ***Enter your group nr***
-
-   ***Link to forked repo***
+   Grupa 13  
+   [link to repo](https://github.com/kacper-preyzner/tbd-workshop-1)
 
 3. Sync your repo with https://github.com/bdg-tbd/tbd-workshop-1.
 
