@@ -26,6 +26,8 @@ Worth to read:
 4. Provision your infrastructure.
 
     a) setup Vertex AI Workbench `pyspark` kernel as described in point [8](https://github.com/bdg-tbd/tbd-workshop-1/tree/v1.0.32#project-setup) 
+   <img width="737" height="122" alt="image" src="https://github.com/user-attachments/assets/d1c9cae3-c354-48ed-bde5-e7fc20850f46" />
+
 
     b) upload [tpc-di-setup.ipynb](https://github.com/bdg-tbd/tbd-workshop-1/blob/v1.0.36/notebooks/tpc-di-setup.ipynb) to 
 the running instance of your Vertex AI Workbench
@@ -61,6 +63,9 @@ the running instance of your Vertex AI Workbench
          git pull
          ```
       replace repo with your fork. Next checkout to 'notebook' branch.
+
+      <img width="647" height="112" alt="image" src="https://github.com/user-attachments/assets/23cb9482-015a-4996-a4e3-4113ec06ed2c" />
+
    
     c) after running first cells your fork of `tbd-tpc-di` repository will be cloned into Vertex AI  enviroment (see git folder).
 
