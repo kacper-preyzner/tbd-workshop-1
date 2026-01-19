@@ -43,23 +43,16 @@ module "gcr" {
 #  dbt_spark_version  = local.dbt_spark_version
 #}
 
-## Vertex AI Workbench replaced with Jupyter on Dataproc cluster
-## See Dataproc module configuration for Jupyter optional component
-#module "vertex_ai_workbench" {
-#  depends_on   = [module.vpc]
-#  source       = "./modules/vertex-ai-workbench"
-#  project_name = var.project_name
-#  region       = var.region
-#  network      = module.vpc.network.network_id
-#  subnet       = module.vpc.subnets[local.notebook_subnet_id].id
-#
-#  ai_notebook_instance_owner = var.ai_notebook_instance_owner
-#  ## To remove before workshop
-#  # FIXME:remove
-#  ai_notebook_image_repository = element(split(":", module.jupyter_docker_image.jupyter_image_name), 0)
-#  ai_notebook_image_tag        = element(split(":", module.jupyter_docker_image.jupyter_image_name), 1)
-#  ## To remove before workshop
-#}
+module "vertex_ai_workbench" {
+  depends_on   = [module.vpc]
+  source       = "./modules/vertex-ai-workbench"
+  project_name = var.project_name
+  region       = var.region
+  network      = module.vpc.network.network_id
+  subnet       = module.vpc.subnets[local.notebook_subnet_id].id
+
+  ai_notebook_instance_owner = var.ai_notebook_instance_owner
+}
 
 #
 module "dataproc" {
