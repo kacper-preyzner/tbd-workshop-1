@@ -46,29 +46,32 @@ resource "google_storage_bucket_object" "post-startup" {
 
 
 
-resource "google_notebooks_instance" "tbd_notebook" {
+resource "google_workbench_instance" "tbd_notebook" {
   #checkov:skip=CKV2_GCP_18: "Ensure GCP network defines a firewall and does not use the default firewall"
   #checkov:skip=CKV2_GCP_21: "Ensure Vertex AI instance disks are encrypted with a Customer Managed Key (CMK)"
-  depends_on   = [google_project_service.notebooks]
-  location     = local.zone
-  machine_type = "e2-standard-2"
-  name         = "${var.project_name}-notebook"
-  container_image {
-    repository = var.ai_notebook_image_repository
-    tag        = var.ai_notebook_image_tag
+  depends_on = [google_project_service.notebooks]
+  name       = "${var.project_name}-notebook"
+  location   = local.zone
+  project    = var.project_name
+
+  gce_setup {
+    machine_type = "e2-standard-2"
+
+    network_interfaces {
+      network  = var.network
+      subnet   = var.subnet
+      nic_type = "VIRTIO_NET"
+    }
+
+    disable_public_ip = true
+
+    metadata = {
+      vmDnsSetting        = "GlobalDefault"
+      post-startup-script = "gs://${google_storage_bucket_object.post-startup.bucket}/${google_storage_bucket_object.post-startup.name}"
+    }
   }
-  network = var.network
-  subnet  = var.subnet
-  ## change it to break the checkov during the labs
-  # FIXME:remove
-  no_public_ip    = true
-  no_proxy_access = true
-  # end
+
   instance_owners = [var.ai_notebook_instance_owner]
-  metadata = {
-    vmDnsSetting : "GlobalDefault"
-  }
-  post_startup_script = "gs://${google_storage_bucket_object.post-startup.bucket}/${google_storage_bucket_object.post-startup.name}"
 }
 
 
