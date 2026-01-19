@@ -9,8 +9,7 @@ variable "region" {
   description = "GCP region"
 }
 
-## Vertex AI Workbench has been replaced with Jupyter on Dataproc
-#variable "ai_notebook_instance_owner" {
-#  type        = string
-#  description = "Vertex AI workbench owner"
-#}
+variable "ai_notebook_instance_owner" {
+  type        = string
+  description = "Vertex AI workbench owner"
+}
