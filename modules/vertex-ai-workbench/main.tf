@@ -55,7 +55,7 @@ resource "google_workbench_instance" "tbd_notebook" {
   project    = var.project_name
 
   gce_setup {
-    machine_type = "e2-standard-2"
+    machine_type = "e2-standard-4"
 
     network_interfaces {
       network  = var.network
