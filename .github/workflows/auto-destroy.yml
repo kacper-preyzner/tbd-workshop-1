@@ -1,8 +1,8 @@
 name: Auto Destroy
 
 on:
-  # schedule:
-  #   - cron: "0 2 * * *"   # Run daily at 02:00 UTC, 03:00 Polish winter time
+  schedule:
+    - cron: "0 2 * * *"   # Run daily at 02:00 UTC, 03:00 Polish winter time
   pull_request:
     types:
       - closed
